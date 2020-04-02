@@ -8,16 +8,18 @@ public class Bullet : MonoBehaviour
     [SerializeField] float _velocity = 20f;
 
     private Rigidbody _rb;
+    private Vector3 _bulletVelocity;
     public Ball Ball { get; set; }
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _bulletVelocity = new Vector3(0, 0, _velocity);
     }
 
     private void FixedUpdate()
     {
-        _rb.velocity = new Vector3(0, 0, _velocity);
+        _rb.velocity = _bulletVelocity;
     }
 
     private void OnTriggerEnter(Collider collision)

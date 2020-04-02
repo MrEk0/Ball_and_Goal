@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour
     private Transform _thisTransform;
     private Rigidbody _rb;
     private Vector3 _target;
+    Vector3 _newBallPosition;
 
     private float _castDistance = Mathf.Infinity;
     private float _currentBallSize;
@@ -53,24 +54,33 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if(!IsReachedTarget() || !CanFire)
+        if (!IsReachedTarget() || !CanFire)
         {
             return;
         }
-        
 
+        MouseClickBehaviour();
+
+        TouchBehaviour();
+    }
+
+    private void MouseClickBehaviour()
+    {
         if (Input.GetMouseButton(0))
         {
             _aim.IncreaseImageSize();
             ResizeBall();
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             Shot();
             _aim.ResizeBackImage();
         }
+    }
 
+    private void TouchBehaviour()
+    {
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -130,8 +140,8 @@ public class Ball : MonoBehaviour
 
     private void MoveTheBall()
     {
-        Vector3 newPosition = Vector3.MoveTowards(_thisTransform.position, _target, _speed * Time.fixedDeltaTime);
-        _rb.MovePosition(newPosition);
+        _newBallPosition = Vector3.MoveTowards(_thisTransform.position, _target, _speed * Time.fixedDeltaTime);
+        _rb.MovePosition(_newBallPosition);
         _aim.FollowBall(_thisTransform);
     }
 
